@@ -1,7 +1,12 @@
 package com.cybertek.tests;
 
 import com.cybertek.utilities.WebDriverFactory;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -18,6 +23,7 @@ public class ChercherTest {
     */
 
     WebDriver driver;   //declare our reference for the object
+    WebDriverWait wait;
 
     @BeforeMethod
     public void setUp(){
@@ -34,7 +40,17 @@ public class ChercherTest {
     }
     @Test
     public void alertPresentTest(){
+        //Click on "Click me, to Open an alert after 5 seconds"
+        WebElement initiatealert = driver.findElement(By.id("alert"));
+        initiatealert.click();
 
+        wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.alertIsPresent());
+
+        //handle js alert
+        //if you do not wait you will get NoAlertPresentException: no such alert
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
 
     }
 
