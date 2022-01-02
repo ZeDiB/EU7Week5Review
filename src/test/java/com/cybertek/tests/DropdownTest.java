@@ -39,12 +39,12 @@ public class DropdownTest {
     @AfterMethod
     public void tearDown() throws InterruptedException {
         Thread.sleep(2000);
-        driver.close();
+       // driver.close();
 
     }
 
     @Test
-    public void test(){
+    public void test() throws InterruptedException {
         WebElement userInpuBox = driver.findElement(By.id("ctl00_MainContent_username"));
         userInpuBox.sendKeys("Tester");
 
@@ -61,6 +61,23 @@ public class DropdownTest {
 
         Assert.assertEquals(actualSelectedOption,expectedSelectedOption,"First option selected is Not as expected");
 
+        productDropdown.selectByVisibleText("FamilyAlbum");
+        WebElement quantityBox = driver.findElement(By.id("ctl00_MainContent_fmwOrder_txtQuantity"));
+
+        quantityBox.sendKeys("2");
+        Thread.sleep(2000);
+        WebElement calculateButton =driver.findElement(By.cssSelector("input[type='submit']"));
+        calculateButton.click();
+
+        int expectedPrice = 160;
+        WebElement totalPriceElement = driver.findElement(By.id("ctl00_MainContent_fmwOrder_txtTotal"));
+
+//        System.out.println("totalPriceElement.getAttribute(\"value\") = " + totalPriceElement.getAttribute("value"));
+//        System.out.println("totalPriceElement.getAttribute(\"size\") = " + totalPriceElement.getAttribute("size"));
+
+        int actualPrice = Integer.parseInt(totalPriceElement.getAttribute("value"));
+
+        Assert.assertEquals(actualPrice,expectedPrice,"Price is not as expected");
 
 
     }
